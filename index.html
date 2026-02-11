@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Your View Matters — USA Events</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="color-scheme" content="dark light" />
+    <meta
+      name="description"
+      content="A short, mobile-friendly survey to share your view on recent events in the USA."
+    />
+
+    <style>
+      /* ========== MOBILE-FIRST TYPO & THEME ========== */
+      :root {
+        /* Light mode defaults */
+        --bg: #f8fafc;
+        --surface: #ffffff;
+        --text: #0f172a;
+        --muted: #475569;
+        --border: #e5e7eb;
+
+        --accent: #1d4ed8;
+        --accent-2: #16a34a;
+
+        --btn: #1d4ed8;
+        --btn-hover: #163fa1;
+        --btn-secondary: #e2e8f0;
+
+        --ok: #166534;
+        --warn: #92400e;
+        --danger: #7f1d1d;
+
+        --radius: 14px;
+        --gap: 18px;
+        --pad: clamp(16px, 3.5vw, 22px);
+        --shadow: 0 8px 24px rgba(2, 6, 23, 0.08);
+
+        --font:
+          system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial,
+          "Noto Sans";
+      }
+
+      /* Dark mode via system preference */
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0b1220;
+          --surface: #0f172a;
+          --text: #e5e7eb;
+          --muted: #cbd5e1;
+          --border: #1f2937;
+
+          --btn: #2563eb;
+          --btn-hover: #1d4ed8;
+          --btn-secondary: #334155;
+
+          --shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+        }
+      }
+
+      .visually-hidden {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0 0 0 0) !important;
+        clip-path: inset(50%) !important;
+        border: 0 !important;
+        white-space: nowrap !important;
+      }
+
+      /* Make it visible on keyboard focus */
+      .visually-hidden:focus,
+      .visually-hidden:active {
+        position: static !important;
+        width: auto !important;
+        height: auto !important;
+        margin: 0 !important;
+        clip: auto !important;
+        clip-path: none !important;
+        overflow: visible !important;
+        padding: 8px 12px !important;
+        background: var(--btn, #1d4ed8);
+        color: #fff;
+        border-radius: 6px;
+        text-decoration: none;
+        z-index: 9999;
+        display: inline-block;
+      }
+
+      /* Optional manual override:
+       <html data-theme="dark"> or <html data-theme="light">
+    */
+      html[data-theme="light"] {
+        --bg: #f8fafc;
+        --surface: #ffffff;
+        --text: #0f172a;
+        --muted: #475569;
+        --border: #e5e7eb;
+        --btn: #1d4ed8;
+        --btn-hover: #163fa1;
+        --btn-secondary: #e2e8f0;
+        --shadow: 0 8px 24px rgba(2, 6, 23, 0.08);
+      }
+      html[data-theme="dark"] {
+        --bg: #0b1220;
+        --surface: #0f172a;
+        --text: #e5e7eb;
+        --muted: #cbd5e1;
+        --border: #1f2937;
+        --btn: #2563eb;
+        --btn-hover: #1d4ed8;
+        --btn-secondary: #334155;
+        --shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+      }
+
+      /* ========= GLOBAL ========= */
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font);
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      .wrap {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: env(safe-area-inset-top) var(--pad)
+          calc(var(--pad) + env(safe-area-inset-bottom));
+        display: grid;
+        gap: var(--gap);
+      }
+
+      header {
+        padding-top: 4px;
+      }
+      h1 {
+        font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+        margin: 0 0 8px;
+        font-weight: 800;
+        letter-spacing: 0.1px;
+      }
+      p.lead {
+        color: var(--muted);
+        margin: 0 0 10px;
+        font-size: clamp(1rem, 2.4vw, 1.1rem);
+      }
+
+      /* ========= CARDS ========= */
+      .hero-card,
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: var(--pad);
+        box-shadow: var(--shadow);
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(29, 78, 216, 0.08);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 0.85rem;
+      }
+      .badge .dot {
+        width: 8px;
+        height: 8px;
+        background: var(--accent-2);
+        border-radius: 50%;
+      }
+
+      .step-title {
+        font-weight: 800;
+        margin: 0 0 6px;
+        font-size: 1.05rem;
+      }
+      .question {
+        margin: 2px 0 12px;
+        color: var(--muted);
+        font-size: 1rem;
+      }
+
+      .btnrow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 10px 0 2px;
+      }
+
+      /* ========= BUTTONS ========= */
+      button {
+        appearance: none;
+        border: 0;
+        border-radius: 12px;
+        cursor: pointer;
+        padding: 14px 16px;
+        font-weight: 800;
+        letter-spacing: 0.2px;
+        color: #fff;
+        background: var(--btn);
+        min-width: min(100%, 320px);
+        box-shadow: 0 6px 16px rgba(29, 78, 216, 0.25);
+        transition:
+          background 0.15s ease,
+          transform 0.03s ease,
+          box-shadow 0.2s ease;
+      }
+      button:hover {
+        background: var(--btn-hover);
+      }
+      button:active {
+        transform: translateY(1px);
+      }
+
+      .btn-secondary {
+        background: var(--btn-secondary);
+        color: var(--text);
+        box-shadow: none;
+      }
+      .btn-ok {
+        background: var(--ok);
+      }
+      .btn-warn {
+        background: var(--warn);
+      }
+      .btn-danger {
+        background: var(--danger);
+      }
+
+      .muted {
+        color: var(--muted);
+        font-size: 0.96rem;
+      }
+
+      .facts {
+        border: 1px dashed var(--border);
+        border-left: 4px solid var(--accent);
+        background: rgba(29, 78, 216, 0.05);
+        padding: 12px 14px;
+        border-radius: 12px;
+        margin-top: 10px;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+      .hr {
+        height: 1px;
+        background: var(--border);
+        margin: 12px 0;
+      }
+
+      .choice-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.84rem;
+        border: 1px solid var(--border);
+        padding: 4px 10px;
+        border-radius: 999px;
+        margin: 0 8px 8px 0;
+      }
+
+      /* ========= ACCESSIBILITY ========= */
+      :focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 2px;
+        border-radius: 10px;
+      }
+
+      /* ========= MOBILE TWEAKS ========= */
+      @media (max-width: 480px) {
+        body {
+          font-size: 17px;
+        }
+        .btnrow {
+          gap: 8px;
+        }
+        button {
+          min-width: 100%;
+        }
+      }
+    </style>
+  </head>
+<body>
+  <a href="#main" class="visually-hidden">Skip to content</a>
+
+  <div class="wrap" id="main" role="main">
+    <header class="hero-card slide-in" aria-labelledby="title">
+      <div class="badge" aria-hidden="true">
+        <span class="dot"></span> Mobile‑first • Privacy‑friendly
+      </div>
+      <h1 id="title">The world needs your view on recent events in the USA</h1>
+      <p class="lead">A short, touch‑friendly survey — just two or three clicks to complete.</p>
+    </header>
+
+    <!-- Step 1: Are you American? -->
+    <section class="card slide-in" id="step1" aria-labelledby="step1-title">
+      <div id="step1-title" class="step-title">Step 1</div>
+      <p class="question">Are you American?</p>
+      <div class="btnrow">
+        <button id="s1-yes" class="pulse" aria-describedby="privacy-note">Yes</button>
+        <button id="s1-no" class="btn-secondary" aria-describedby="privacy-note">No</button>
+      </div>
+      <p id="privacy-note" class="muted">Local-only: no data leaves your device.</p>
+    </section>
+
+    <!-- Step 2A: US branch -->
+    <section class="card hidden slide-in" id="step2-us" aria-labelledby="step2us-title">
+      <div id="step2us-title" class="step-title">Step 2</div>
+      <p class="question">
+        Do you currently support your President in the sense that he protects the country, its people, women, and children?
+      </p>
+      <div class="btnrow">
+        <button id="s2us-yes">Yes</button>
+        <button id="s2us-no" class="btn-secondary">No</button>
+      </div>
+    </section>
+
+    <!-- Step 2B: non‑US branch -->
+    <section class="card hidden slide-in" id="step2-nonus" aria-labelledby="step2nonus-title">
+      <div id="step2nonus-title" class="step-title">Step 2</div>
+      <p class="question">
+        Do you support the President of the USA in the sense that he stabilizes the world and protects women and children?
+      </p>
+      <div class="btnrow">
+        <button id="s2nonus-yes">Yes</button>
+        <button id="s2nonus-no" class="btn-secondary">No</button>
+      </div>
+    </section>
+
+    <!-- Facts (always shown after Step 2; reconsider controls shown only if initial support = Yes) -->
+    <section class="card hidden slide-in" id="facts" aria-labelledby="facts-title">
+      <div id="facts-title" class="step-title">Facts</div>
+      <div class="facts" id="facts-body" role="note" aria-live="polite">
+        <!-- FACTS_TEXT is injected here -->
+      </div>
+      <div class="hr" role="separator" aria-hidden="true"></div>
+      <p class="question" id="reconsider-question">Based on these facts, would you like to reconsider your view?</p>
+      <div class="btnrow" id="reconsider-row">
+        <button id="reconsider-yes" class="btn-ok">Yes — I don’t fully support the President after all</button>
+        <button id="reconsider-fake" class="btn-warn">No — these facts are fake</button>
+        <button id="reconsider-nochange" class="btn-danger">No — I stand by my view despite the facts</button>
+      </div>
+    </section>
+
+    <!-- Closing messages -->
+    <section class="card hidden slide-in" id="closing" aria-labelledby="closing-title">
+      <div id="closing-title" class="step-title">Your Outcome</div>
+      <p id="closing-body" style="margin-top: 6px"></p>
+      <div id="trail" class="muted" aria-label="Your choices so far"></div>
+      <div class="btnrow" style="margin-top: 12px">
+        <button id="restart">Start over</button>
+      </div>
+    </section>
+
+    <footer>
+      Made for phones first. Dark/light follows your OS. No tracking, no analytics.
+    </footer>
+  </div>
+
+  <script>
+    // ======= Facts (valid anchors, max 2 links per bullet) =======
+    const FACTS_TEXT = `
+<ul style="padding-left: 18px; margin: 0;">
+
+  <li>
+    <strong>Trump faces 34 criminal convictions, 91 charges, and over $88M liability for sexual abuse and defamation.</strong>
+    (<a href="https://democracy21.org/news/freds-weekly-note/the-worst-president-in-history-a-lifetime-of-failure" target="_blank" rel="noopener noreferrer">1</a>)
+  </li>
+
+  <li>
+    <strong>Epstein files confirm Trump had years of close social ties with Epstein, who is definitively established as the mastermind of a minor‑exploitation network, supported by Maxwell’s 20‑year sentence.</strong>
+    (<a href="https://en.wikipedia.org/wiki/Relationship_of_Donald_Trump_and_Jeffrey_Epstein" target="_blank" rel="noopener noreferrer">2</a>,
+     <a href="https://in.mashable.com/culture/105674/epstein-files-ghislaine-maxwell-invokes-5th-amendment-right-when-questioned-on-trumps-sex-abuse-watc" target="_blank" rel="noopener noreferrer">3</a>)
+  </li>
+
+  <li>
+    <strong>Trump’s immigration policy includes aggressive ICE actions, fatal incidents, and repeated racial‑profiling allegations.</strong>
+    (<a href="https://www.cfr.org/articles/ice-and-deportations-how-trump-reshaping-immigration-enforcement" target="_blank" rel="noopener noreferrer">4</a>,
+     <a href="https://newrepublic.com/post/198933/ice-supreme-court-racial-profiling-trump" target="_blank" rel="noopener noreferrer">5</a>)
+  </li>
+
+  <li>
+    <strong>The U.S. economy shows market instability, a weakened dollar, and negative reactions to Trump’s international escalations, including actions in Venezuela.</strong>
+    (<a href="https://www.economist.com/interactive/trump-approval-tracker" target="_blank" rel="noopener noreferrer">6</a>)
+  </li>
+
+</ul>`;
+
+    // ======= Closing messages =======
+    const CLOSINGS = {
+      US_NOT_SUPPORTING:
+        "You indicated that you are American and do not currently support the President. Thank you for stating your position clearly. That is important for the United States and for the entire world. Please consider sharing this page with as many people as possible — Americans and non‑Americans, both supporters and opponents of Trump — through email and all social media platforms. Even pro‑Trump supporters will see the facts, making this an important form of awareness‑raising for them as well.",
+      US_RECONSIDER_YES:
+        "You reconsidered and indicated you don’t fully support the President after reviewing the facts. Your willingness to update your view is very important for the United States and for the entire world. Please consider sharing this page with as many people as possible — Americans and non‑Americans, both supporters and opponents of Trump — through email and all social media platforms.",
+      US_RECONSIDER_FAKE:
+        "You rejected the facts panel as fake — that is your right. Still, you might consider sharing this page more widely. When different people, including those who see things differently, compare sources and express their own views, it becomes easier for others to understand the full picture.",
+      US_RECONSIDER_NOCHANGE:
+        "You still support the President despite the facts shown — that is your choice. If you wish, consider sharing this page as well. When more people, including those who think like you, express their views and compare information, it helps others understand the full picture.",
+      NONUS_NOT_SUPPORTING:
+        "You’re not American and do not currently support the President. Thank you for stating your position clearly. That is important for the United States and for the entire world. Please consider sharing this page with as many people as possible — Americans and non‑Americans, both supporters and opponents of Trump — through email and all social media platforms. Even pro‑Trump supporters will see the facts, making this an important form of awareness‑raising for them as well.",
+      NONUS_RECONSIDER_YES:
+        "You reconsidered and indicated you don’t fully support the President after reviewing the facts. Your willingness to update your view is very important for the United States and for the entire world. Please consider sharing this page with as many people as possible — Americans and non‑Americans, both supporters and opponents of Trump — through email and all social media platforms.",
+      NONUS_RECONSIDER_FAKE:
+        "You rejected the facts panel as fake — that is your right. Still, you might consider sharing this page more widely. When different people, including those who see things differently, compare sources and express their own views, it becomes easier for others to understand the full picture.",
+      NONUS_RECONSIDER_NOCHANGE:
+        "You still support the President despite the facts shown — that is your choice. If you wish, consider sharing this page as well. When more people, including those who think like you, express their views and compare information, it helps others understand the full picture."
+    };
+
+    // ======= State =======
+    const state = {
+      isUS: null,             // true | false
+      initialSupport: null,   // 'yes' | 'no'
+      reconsider: null        // 'yes' | 'fake' | 'nochange'
+    };
+
+    // ======= Helpers (single definitions, reused everywhere) =======
+    function $(sel) { return document.querySelector(sel); }
+    function show(id) { const el = $(id); if (el) el.classList.remove('hidden'); }
+    function hide(id) { const el = $(id); if (el) el.classList.add('hidden'); }
+    function setFacts(html) { const el = $('#facts-body'); if (el) el.innerHTML = html; }
+
+    function showTrail() {
+      const crumbs = [];
+      crumbs.push('<span class="choice-tag"><span class="b"></span> American: ' + (state.isUS ? 'Yes' : 'No') + '</span>');
+      if (state.initialSupport) {
+        crumbs.push('<span class="choice-tag"><span class="b"></span> Initial support: ' + (state.initialSupport === 'yes' ? 'Yes' : 'No') + '</span>');
+      }
+      if (state.reconsider) {
+        const map = { yes: 'Reconsidered: Yes', fake: 'Reconsidered: “Facts are fake”', nochange: 'Reconsidered: No change' };
+        crumbs.push('<span class="choice-tag"><span class="b"></span> ' + map[state.reconsider] + '</span>');
+      }
+      const trail = $('#trail');
+      if (trail) trail.innerHTML = crumbs.join('');
+    }
+
+    function scrollInto(el) { if (el && el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+
+    // Prefer canonical URL; fallback to origin+pathname
+    function getShareURL() {
+      var link = document.querySelector('link[rel="canonical"]');
+      if (link && link.href) return link.href;
+      return window.location.origin + window.location.pathname;
+    }
+
+    // Hide reconsider question + buttons (used after any reconsider click)
+    function lockReconsider() {
+      const q = document.getElementById('reconsider-question');
+      const row = document.getElementById('reconsider-row');
+      if (q)  q.style.display = 'none';
+      if (row) row.style.display = 'none';
+    }
+
+    // Render closing text + share block (uniform for all outcomes)
+    function setClosingWithShare(message) {
+      var shareUrl = getShareURL();
+      var shareTitle = 'The world needs your view on recent events in the USA';
+      var shareTextHtml = 'A short, touch‑friendly survey — just two or three clicks to complete.<br />Please share your view by clicking the link below.';
+
+      // Build plain-text version (convert <br> to \n first)
+      var tmp = document.createElement('div');
+      tmp.innerHTML = shareTextHtml.replace(/<br\s*\/?>/gi, '\n');
+      var shareTextPlain = (tmp.textContent || tmp.innerText || '').trim();
+
+      // Render on-page share UI (single Share button; copy options removed per your last versions)
+      var shareHtml =
+        '<div style="margin-top:12px;">' +
+          '<div style="font-weight:700; margin:8px 0 6px;">=== Share this ===</div>' +
+          '<div style="margin:4px 0;"><strong>' + shareTitle + '</strong></div>' +
+          '<div style="margin:4px 0;">' + shareTextHtml + '</div>' +
+          '<div style="margin:4px 0;"><a href="' + shareUrl + '" target="_blank" rel="noopener noreferrer">' + shareUrl + '</a></div>' +
+          '<div class="btnrow" style="margin-top:8px; flex-wrap:wrap; gap:8px;">' +
+            '<button id="share-native" class="btn-secondary" type="button" aria-label="Share via system or email">Share</button>' +
+          '</div>' +
+        '</div>';
+
+      var closingBody = document.getElementById('closing-body');
+      if (!closingBody) return;
+      closingBody.innerHTML = (message + ' ' + shareHtml).trim();
+
+      // Share button behavior: Windows → mailto; others → Web Share API → fallback plain copy
+      var btnShare = document.getElementById('share-native');
+      if (btnShare) {
+        btnShare.addEventListener('click', function () {
+          var ua = navigator.userAgent || '';
+          var isWindows = ua.indexOf('Windows') !== -1;
+
+          var subject = shareTitle;
+          var body = shareTextPlain + '\n' + shareUrl;
+          var mailto = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+
+          if (isWindows) {
+            window.location.href = mailto; // reliable subject/body in Outlook/Mail
+            return;
+          }
+          if (navigator.share) {
+            navigator.share({ title: shareTitle, text: shareTextPlain, url: shareUrl })
+              .catch(function () { /* user canceled or not allowed */ });
+          } else {
+            // Last fallback: copy plain to clipboard if available
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(subject + '\n' + body).catch(function(){ /* ignore */ });
+            }
+          }
+        });
+      }
+    }
+
+    // Show/hide reconsider controls (only shown if initial support = Yes)
+    function toggleReconsider(showIt) {
+      const q   = document.getElementById('reconsider-question');
+      const row = document.getElementById('reconsider-row');
+      if (q)   q.style.display   = showIt ? '' : 'none';
+      if (row) row.style.display = showIt ? '' : 'none';
+    }
+
+    function resetFlow() {
+      // Reset state
+      state.isUS = null;
+      state.initialSupport = null;
+      state.reconsider = null;
+
+      // Reset UI
+      hide('#step2-us');
+      hide('#step2-nonus');
+      hide('#facts');
+      hide('#closing');
+
+      // Initial visibility
+      show('#step1');
+      setFacts(FACTS_TEXT);
+      const closingBody = $('#closing-body');
+      if (closingBody) closingBody.textContent = '';
+      const trail = $('#trail');
+      if (trail) trail.textContent = '';
+
+      toggleReconsider(false); // start hidden
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const focusBtn = $('#s1-yes');
+      if (focusBtn) focusBtn.focus();
+    }
+
+    // ======= Event wiring (Facts shown from Step 2; reconsider only if initial support = Yes) =======
+    window.addEventListener('DOMContentLoaded', function () {
+      // Cache frequently used elements once
+      const elStep2US     = $('#step2-us');
+      const elStep2NonUS  = $('#step2-nonus');
+      const elFacts       = $('#facts');
+      const elClosing     = $('#closing');
+
+      const s1Yes        = document.getElementById('s1-yes');
+      const s1No         = document.getElementById('s1-no');
+      const s2usYes      = document.getElementById('s2us-yes');
+      const s2usNo       = document.getElementById('s2us-no');
+      const s2nonusYes   = document.getElementById('s2nonus-yes');
+      const s2nonusNo    = document.getElementById('s2nonus-no');
+
+      const rYes  = document.getElementById('reconsider-yes');
+      const rFake = document.getElementById('reconsider-fake');
+      const rNoCh = document.getElementById('reconsider-nochange');
+
+      if (s1Yes) s1Yes.addEventListener('click', function () {
+        state.isUS = true;
+        hide('#step1'); show('#step2-us');
+        showTrail(); scrollInto(elStep2US);
+      });
+
+      if (s1No) s1No.addEventListener('click', function () {
+        state.isUS = false;
+        hide('#step1'); show('#step2-nonus');
+        showTrail(); scrollInto(elStep2NonUS);
+      });
+
+      if (s2usYes) s2usYes.addEventListener('click', function () {
+        state.initialSupport = 'yes';
+        hide('#step2-us'); setFacts(FACTS_TEXT); show('#facts');
+        toggleReconsider(true);
+        showTrail(); scrollInto(elFacts);
+      });
+
+      if (s2usNo) s2usNo.addEventListener('click', function () {
+        state.initialSupport = 'no';
+        hide('#step2-us'); setFacts(FACTS_TEXT); show('#facts');
+        toggleReconsider(false);
+        setClosingWithShare(CLOSINGS.US_NOT_SUPPORTING);
+        show('#closing'); showTrail(); scrollInto(elFacts);
+      });
+
+      if (s2nonusYes) s2nonusYes.addEventListener('click', function () {
+        state.initialSupport = 'yes';
+        hide('#step2-nonus'); setFacts(FACTS_TEXT); show('#facts');
+        toggleReconsider(true);
+        showTrail(); scrollInto(elFacts);
+      });
+
+      if (s2nonusNo) s2nonusNo.addEventListener('click', function () {
+        state.initialSupport = 'no';
+        hide('#step2-nonus'); setFacts(FACTS_TEXT); show('#facts');
+        toggleReconsider(false);
+        setClosingWithShare(CLOSINGS.NONUS_NOT_SUPPORTING);
+        show('#closing'); showTrail(); scrollInto(elFacts);
+      });
+
+      // Reconsider outcomes — keep Facts visible and lock the reconsider UI after a click
+      if (rYes) rYes.addEventListener('click', function () {
+        state.reconsider = 'yes';
+        lockReconsider(); // hide question + buttons after click
+        setClosingWithShare(state.isUS ? CLOSINGS.US_RECONSIDER_YES : CLOSINGS.NONUS_RECONSIDER_YES);
+        show('#closing'); showTrail(); scrollInto(elClosing);
+      });
+
+      if (rFake) rFake.addEventListener('click', function () {
+        state.reconsider = 'fake';
+        lockReconsider(); // hide question + buttons after click
+        setClosingWithShare(state.isUS ? CLOSINGS.US_RECONSIDER_FAKE : CLOSINGS.NONUS_RECONSIDER_FAKE);
+        show('#closing'); showTrail(); scrollInto(elClosing);
+      });
+
+      if (rNoCh) rNoCh.addEventListener('click', function () {
+        state.reconsider = 'nochange';
+        lockReconsider(); // hide question + buttons after click
+        setClosingWithShare(state.isUS ? CLOSINGS.US_RECONSIDER_NOCHANGE : CLOSINGS.NONUS_RECONSIDER_NOCHANGE);
+        show('#closing'); showTrail(); scrollInto(elClosing);
+      });
+
+      // Restart
+      const restart = document.getElementById('restart');
+      if (restart) restart.addEventListener('click', function () {
+        resetFlow(); toggleReconsider(false);
+      });
+
+      // Init
+      resetFlow(); toggleReconsider(false);
+    });
+  </script>
+</body>
+</html>
